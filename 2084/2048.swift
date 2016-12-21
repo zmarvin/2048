@@ -1,5 +1,5 @@
 //
-//  2084.swift
+//  2048.swift
 //  SwiftPractise
 //
 //  Created by zz on 2016/12/21.

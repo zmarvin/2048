@@ -13,11 +13,11 @@
 		3A4317A01E0ACD63005A779C /* _084.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A43179E1E0ACD63005A779C /* _084.xcdatamodeld */; };
 		3A4317A21E0ACD63005A779C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A4317A11E0ACD63005A779C /* Assets.xcassets */; };
 		3A4317A51E0ACD63005A779C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A4317A31E0ACD63005A779C /* LaunchScreen.storyboard */; };
-		3A4317AD1E0ACD77005A779C /* 2084.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4317AC1E0ACD77005A779C /* 2084.swift */; };
+		3A4317AD1E0ACD77005A779C /* 2048.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4317AC1E0ACD77005A779C /* 2048.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A4317941E0ACD63005A779C /* 2084.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2084.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A4317941E0ACD63005A779C /* 2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4317971E0ACD63005A779C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4317991E0ACD63005A779C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3A43179C1E0ACD63005A779C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -25,7 +25,7 @@
 		3A4317A11E0ACD63005A779C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A4317A41E0ACD63005A779C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A4317A61E0ACD63005A779C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A4317AC1E0ACD77005A779C /* 2084.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = 2084.swift; sourceTree = "<group>"; };
+		3A4317AC1E0ACD77005A779C /* 2048.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = 2048.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +42,7 @@
 		3A43178B1E0ACD63005A779C = {
 			isa = PBXGroup;
 			children = (
-				3A4317961E0ACD63005A779C /* 2084 */,
+				3A4317961E0ACD63005A779C /* 2048 */,
 				3A4317951E0ACD63005A779C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,15 +50,15 @@
 		3A4317951E0ACD63005A779C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3A4317941E0ACD63005A779C /* 2084.app */,
+				3A4317941E0ACD63005A779C /* 2048.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3A4317961E0ACD63005A779C /* 2084 */ = {
+		3A4317961E0ACD63005A779C /* 2048 */ = {
 			isa = PBXGroup;
 			children = (
-				3A4317AC1E0ACD77005A779C /* 2084.swift */,
+				3A4317AC1E0ACD77005A779C /* 2048.swift */,
 				3A4317971E0ACD63005A779C /* AppDelegate.swift */,
 				3A4317991E0ACD63005A779C /* ViewController.swift */,
 				3A43179B1E0ACD63005A779C /* Main.storyboard */,
@@ -67,15 +67,16 @@
 				3A4317A61E0ACD63005A779C /* Info.plist */,
 				3A43179E1E0ACD63005A779C /* _084.xcdatamodeld */,
 			);
+			name = 2048;
 			path = 2084;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3A4317931E0ACD63005A779C /* 2084 */ = {
+		3A4317931E0ACD63005A779C /* 2048 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3A4317A91E0ACD63005A779C /* Build configuration list for PBXNativeTarget "2084" */;
+			buildConfigurationList = 3A4317A91E0ACD63005A779C /* Build configuration list for PBXNativeTarget "2048" */;
 			buildPhases = (
 				3A4317901E0ACD63005A779C /* Sources */,
 				3A4317911E0ACD63005A779C /* Frameworks */,
@@ -85,9 +86,9 @@
 			);
 			dependencies = (
 			);
-			name = 2084;
+			name = 2048;
 			productName = 2084;
-			productReference = 3A4317941E0ACD63005A779C /* 2084.app */;
+			productReference = 3A4317941E0ACD63005A779C /* 2048.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,11 +103,12 @@
 				TargetAttributes = {
 					3A4317931E0ACD63005A779C = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 3G867EH2KH;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 3A43178F1E0ACD63005A779C /* Build configuration list for PBXProject "2084" */;
+			buildConfigurationList = 3A43178F1E0ACD63005A779C /* Build configuration list for PBXProject "2048" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -119,7 +121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3A4317931E0ACD63005A779C /* 2084 */,
+				3A4317931E0ACD63005A779C /* 2048 */,
 			);
 		};
 /* End PBXProject section */
@@ -145,7 +147,7 @@
 				3A43179A1E0ACD63005A779C /* ViewController.swift in Sources */,
 				3A4317A01E0ACD63005A779C /* _084.xcdatamodeld in Sources */,
 				3A4317981E0ACD63005A779C /* AppDelegate.swift in Sources */,
-				3A4317AD1E0ACD77005A779C /* 2084.swift in Sources */,
+				3A4317AD1E0ACD77005A779C /* 2048.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3G867EH2KH;
 				INFOPLIST_FILE = 2084/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zz.-084";
@@ -278,6 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3G867EH2KH;
 				INFOPLIST_FILE = 2084/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zz.-084";
@@ -289,7 +293,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3A43178F1E0ACD63005A779C /* Build configuration list for PBXProject "2084" */ = {
+		3A43178F1E0ACD63005A779C /* Build configuration list for PBXProject "2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A4317A71E0ACD63005A779C /* Debug */,
@@ -298,13 +302,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3A4317A91E0ACD63005A779C /* Build configuration list for PBXNativeTarget "2084" */ = {
+		3A4317A91E0ACD63005A779C /* Build configuration list for PBXNativeTarget "2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3A4317AA1E0ACD63005A779C /* Debug */,
 				3A4317AB1E0ACD63005A779C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
