@@ -178,10 +178,6 @@ struct Matrix {
                 unused.append(item)
                 
                 grid.append(item)
-                item.isfarLeft = false
-                item.isfarRight = false
-                item.isfarUp = false
-                item.isfarDown = false
                 
                 item.row = row
                 item.column = column
@@ -198,10 +194,10 @@ struct Matrix {
                 var rowAdd = row + 1
                 
                 // 判断是否在边界
-                if columnSub < 0             {columnSub = self.columns-1;item.isfarLeft = true}
-                if columnAdd >= self.columns {columnAdd = 0;item.isfarRight = true}
-                if rowSub    < 0             {rowSub = self.rows-1;item.isfarUp = true}
-                if rowAdd    >= self.rows    {rowAdd = 0;item.isfarDown = true}
+                if columnSub < 0             {columnSub = self.columns-1;item.isLeftBorder = true}
+                if columnAdd >= self.columns {columnAdd = 0;item.isRightBorder = true}
+                if rowSub    < 0             {rowSub = self.rows-1;item.isUpBorder = true}
+                if rowAdd    >= self.rows    {rowAdd = 0;item.isDownBorder = true}
                 
                 item.left  = grid[(row * columns) + columnSub]
                 item.right = grid[(row * columns) + columnAdd]
@@ -271,23 +267,23 @@ struct Matrix {
     mutating func arrangeGrid(_ direction : MoveDirection) {
         
         
-        func transferItemNumber(_ directItem : Item , from item: Item){
+        func transferItemNumber(_ nearItem : Item , from item: Item){
             
-            if directItem.number == item.number{
-                directItem.number = 2 * item.number
+            if nearItem.number == item.number{
+                nearItem.number = 2 * item.number
                 item.number = 0
                 
             }else{
-                directItem.number = item.number
+                nearItem.number = item.number
                 item.number = 0
             }
             
         }
         
-        for temprow in 0..<self.rows {
-            var row = temprow
+        for tempRow in 0..<self.rows {
+            var row = tempRow
             if direction == .right { //倒序
-                row = self.rows - (temprow + 1)
+                row = self.rows - (tempRow + 1)
             }
             
             for tempColumn in 0..<self.columns {
@@ -301,24 +297,24 @@ struct Matrix {
                 
                 if item.number == 0 { continue }
                 
-                var directItem = item.directionItem(direction)
+                var nearItem = item.nearItemByDirection(direction)
                 
                 var currentItem = item
                 
-                while !currentItem.isDirectionBoundary(direction) && (directItem?.number == 0 || currentItem.number == directItem?.number) {
+                while !currentItem.isBorderByDirection(direction) && (nearItem?.number == 0 || currentItem.number == nearItem?.number) {
                     
-                    transferItemNumber(directItem!, from: currentItem)
+                    transferItemNumber(nearItem!, from: currentItem)
                     
                     objc_sync_enter(self)
                     addItem(array: &unused, item: currentItem)
-                    removeItem(array: &unused, item: directItem!)
+                    removeItem(array: &unused, item: nearItem!)
                     
-                    addItem(array: &used, item: directItem!)
+                    addItem(array: &used, item: nearItem!)
                     removeItem(array: &used, item: currentItem)
                     objc_sync_exit(self)
                     
-                    currentItem = directItem!
-                    directItem = currentItem.directionItem(direction)
+                    currentItem = nearItem!
+                    nearItem = currentItem.nearItemByDirection(direction)
                 }
                 
                 
@@ -360,32 +356,32 @@ class Item {
     var row = 0
     var column = 0
     
-    var isfarLeft ,isfarRight ,isfarUp ,isfarDown  : Bool
+    var isLeftBorder ,isRightBorder ,isUpBorder ,isDownBorder  : Bool
     
     var left ,right ,up ,down : Item?
     init(number : Int) {
         self.number = number
-        self.isfarLeft = false
-        self.isfarRight = false
-        self.isfarUp = false
-        self.isfarDown = false
+        self.isLeftBorder = false
+        self.isRightBorder = false
+        self.isUpBorder = false
+        self.isDownBorder = false
     }
     
     
-    func isDirectionBoundary(_ direction : MoveDirection) -> Bool{
+    func isBorderByDirection(_ direction : MoveDirection) -> Bool{
         switch direction {
         case .left:
-            return self.isfarLeft
+            return self.isLeftBorder
         case .right:
-            return self.isfarRight
+            return self.isRightBorder
         case .up:
-            return self.isfarUp
+            return self.isUpBorder
         case .down:
-            return self.isfarDown
+            return self.isDownBorder
         }
     }
     
-    func directionItem(_ direction : MoveDirection) -> (Item?){
+    func nearItemByDirection(_ direction : MoveDirection) -> (Item?){
         switch direction {
         case .left:
             return self.left
