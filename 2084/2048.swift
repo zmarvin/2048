@@ -156,7 +156,7 @@ class MatrixView: UIView {
 struct Matrix {
     
     let rows, columns: Int
-    var isHaveUnoccupiedCell: Bool = true
+    var isHaveUnoccupiedItem: Bool = true
     var ultimateNumber: Int = 0
     
     var grid: [Item]
@@ -219,12 +219,12 @@ struct Matrix {
             assert(indexIsValidForRow(row: row, column: column), "Index out of range")
             return grid[(row * columns) + column]
         }
-        
+        /* grid array unnecessary setter
         set {
             assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            
             grid[(row * columns) + column] = newValue
         }
+         */
     }
     
     
@@ -246,7 +246,7 @@ struct Matrix {
         let unusedCount = unused.count
         if unusedCount == 0{
             print("已没有空地")
-            isHaveUnoccupiedCell = false
+            isHaveUnoccupiedItem = false
             return
         }
         
