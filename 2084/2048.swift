@@ -10,11 +10,10 @@ import Foundation
 import UIKit
 
 class MatrixView: UIView {
-    
+    var maxNumber = 0
     private var matrix: Matrix
     private var rows ,columns : Int
-    var maxNumber = 0
-    var itemViews = [UIButton]()
+    private var itemViews = [UIButton]()
     
     public init(rows: Int, columns: Int) {
         self.rows = rows
@@ -103,7 +102,7 @@ class MatrixView: UIView {
     }
     
     
-    func gestureCall( gesture :UIPanGestureRecognizer) {
+    func gestureCall(gesture :UIPanGestureRecognizer) {
         
         switch gesture.state {
         case .began:
@@ -149,7 +148,7 @@ class MatrixView: UIView {
         
         arrangeSubView()
         
-        return 2048
+        return matrix.ultimateNumber
     }
     
 }
@@ -157,10 +156,12 @@ class MatrixView: UIView {
 struct Matrix {
     
     let rows, columns: Int
-    var grid: [Item]
+    var isHaveUnoccupiedCell: Bool = true
+    var ultimateNumber: Int = 0
     
-    var used : [Item]
-    var unused : [Item]
+    var grid: [Item]
+    var used: [Item]
+    var unused: [Item]
     
     init(rows: Int, columns: Int) {
         
@@ -244,7 +245,8 @@ struct Matrix {
         
         let unusedCount = unused.count
         if unusedCount == 0{
-            print("被覆盖了")
+            print("已没有空地")
+            isHaveUnoccupiedCell = false
             return
         }
         
@@ -273,7 +275,9 @@ struct Matrix {
             if nearItem.number == item.number{
                 nearItem.number = 2 * item.number
                 item.number = 0
-                
+                if ultimateNumber < nearItem.number {
+                    ultimateNumber = nearItem.number
+                }
             }else{
                 nearItem.number = item.number
                 item.number = 0
