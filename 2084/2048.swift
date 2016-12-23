@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class MatrixView: UIView {
+    
     private var matrix: Matrix
     private var rows ,columns : Int
     var maxNumber = 0
@@ -282,14 +283,14 @@ struct Matrix {
         
         for tempRow in 0..<self.rows {
             var row = tempRow
-            if direction == .right { //倒序
+            if direction == MoveDirection.down { //倒序
                 row = self.rows - (tempRow + 1)
             }
             
             for tempColumn in 0..<self.columns {
                 
                 var column = tempColumn
-                if direction == .down { //倒序
+                if direction == MoveDirection.right { //倒序
                     column = self.columns - (tempColumn + 1)
                 }
                 
