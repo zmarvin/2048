@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class MatrixView: UIView {
-    var maxNumber = 0
+    var maxNumber: Int
     private var matrix: Matrix
     private var rows ,columns : Int
     private var itemViews = [UIButton]()
@@ -18,6 +18,7 @@ class MatrixView: UIView {
     public init(rows: Int, columns: Int) {
         self.rows = rows
         self.columns = columns
+        self.maxNumber = 0
         self.matrix = Matrix(rows: rows, columns:columns)
         super.init(frame: CGRect.zero)
         
@@ -36,7 +37,7 @@ class MatrixView: UIView {
         
         for column in 0..<columns {
             for row in 0..<rows {
-                let number = matrix.grid[(row * columns) + column].number
+                let number = matrix[row ,column].number
                 
                 let view = UIButton()
                 view.isEnabled = false
@@ -55,28 +56,37 @@ class MatrixView: UIView {
             matrix.createOneRandomItemNumber()
         }
         
-        arrangeSubView()
+        reloadSubViews()
     }
     
-    func arrangeSubView()  {
+    func indexIsValidForRow(row: Int, column: Int) -> Bool {
+        return row >= 0 && row < rows && column >= 0 && column < columns
+    }
+    
+    subscript(row: Int, column: Int) -> UIButton {
+        get {
+            assert(indexIsValidForRow(row: row, column: column), "Index out of range")
+            return itemViews[(row * columns) + column]
+        }
+        /* grid array unnecessary setter
+         set {
+         assert(indexIsValidForRow(row: row, column: column), "Index out of range")
+         grid[(row * columns) + column] = newValue
+         }
+         */
+    }
+    
+    func reloadSubViews()  {
         
-        for item in matrix.used {
+        for item in matrix.grid {
             let row = item.row
             let column = item.column
-            let usedView = itemViews[(row * columns) + column]
-            usedView.isHidden = false
             let number = matrix.grid[(row * columns) + column].number
-            usedView.setTitle(String(number), for: UIControlState.normal)
+            let itemView = self[row ,column]
+            itemView.isHidden = number == 0 ? true : false
+            itemView.setTitle(String(number), for: UIControlState.normal)
         }
         
-        for item in matrix.unused {
-            let row = item.row
-            let column = item.column
-            let unusedView = itemViews[(row * columns) + column]
-            unusedView.isHidden = true
-            let number = matrix.grid[(row * columns) + column].number
-            unusedView.setTitle(String(number), for: UIControlState.normal)
-        }
     }
     
     override func layoutSubviews() {
@@ -92,11 +102,11 @@ class MatrixView: UIView {
         for item in matrix.grid{
             let row = item.row
             let column = item.column
-            let itemView = itemViews[(row * columns) + column]
             
             let viewX = CGFloat(column*margin + margin) + viewWitdh * CGFloat(column)
             let viewY = CGFloat(row*margin + margin) + viewHeight * CGFloat(row)
             
+            let itemView = self[row ,column]
             itemView.frame = CGRect.init(x:viewX, y: viewY, width: viewWitdh, height: viewHeight)
         }
     }
@@ -106,9 +116,6 @@ class MatrixView: UIView {
         
         switch gesture.state {
         case .began:
-            
-            print("x \(gesture.translation(in: self).x)")
-            print("y \(gesture.translation(in: self).y)")
             
             self.isUserInteractionEnabled = false
             
@@ -132,7 +139,6 @@ class MatrixView: UIView {
             }
         case .changed:break
             
-            
         case .ended,.failed,.cancelled:
             self.isUserInteractionEnabled = true
             
@@ -144,9 +150,9 @@ class MatrixView: UIView {
     
     func move(_ direction : MoveDirection) -> Int {
         
-        matrix.arrangeMatrix(direction)
+        matrix.reloadMatrix(direction)
         
-        arrangeSubView()
+        reloadSubViews()
         
         return matrix.ultimateNumber
     }
@@ -156,8 +162,8 @@ class MatrixView: UIView {
 struct Matrix {
     
     let rows, columns: Int
-    var isHaveUnoccupiedItem: Bool = true
-    var ultimateNumber: Int = 0
+    var ultimateNumber: Int
+    var isHaveUnoccupiedItem: Bool
     
     var grid: [Item]
     var used: [Item]
@@ -167,6 +173,8 @@ struct Matrix {
         
         self.rows = rows
         self.columns = columns
+        self.isHaveUnoccupiedItem = true
+        self.ultimateNumber = 0
         
         grid = Array()
         used = Array()
@@ -174,15 +182,11 @@ struct Matrix {
         for row in 0..<rows {
             for column in 0..<columns {
                 let item = Item(number: 0)
-                item.column = column
                 item.row = row
+                item.column = column
                 
                 unused.append(item)
-                
                 grid.append(item)
-                
-                item.row = row
-                item.column = column
             }
         }
         for row in 0..<rows {
@@ -227,14 +231,16 @@ struct Matrix {
          */
     }
     
-    
-    mutating func arrangeMatrix(_ direction : MoveDirection) {
+    mutating func reloadMatrix(_ direction : MoveDirection) {
         
-        arrangeGrid(direction)
-        createOneRandomItemNumber()
+        let arrangedItemCount = arrangeMatrix(direction)
         
-        print("已使用:\(used.count) ---\n---\(used)")
-        print("未使用:\(unused.count) ---\n---\(unused)")
+        if arrangedItemCount > 0 {
+            createOneRandomItemNumber()
+        }
+        
+//        print("已使用:\(used.count) ---\n---\(used)")
+//        print("未使用:\(unused.count) ---\n---\(unused)")
     }
     
     mutating func createOneRandomItemNumber() {
@@ -245,7 +251,7 @@ struct Matrix {
         
         let unusedCount = unused.count
         if unusedCount == 0{
-            print("已没有空地")
+//            print("已没有空闲item")
             isHaveUnoccupiedItem = false
             return
         }
@@ -255,7 +261,7 @@ struct Matrix {
         let item = self[randomRow,randomColumn]
         
         if item.number != 0 {
-            print("被覆盖了number:\(item.number) randomRow: \(randomRow) randomColumn:\(randomColumn) ")
+//            print("被覆盖了number:\(item.number) randomRow: \(randomRow) randomColumn:\(randomColumn) ")
             return
         }
         item.number = 2
@@ -267,7 +273,7 @@ struct Matrix {
         
     }
     
-    mutating func arrangeGrid(_ direction : MoveDirection) {
+    mutating func arrangeMatrix(_ direction : MoveDirection) -> Int{
         
         
         func transferItemNumber(_ nearItem : Item , from item: Item){
@@ -284,6 +290,8 @@ struct Matrix {
             }
             
         }
+        
+        var arrangedItemCount : Int = 0
         
         for tempRow in 0..<self.rows {
             var row = tempRow
@@ -322,9 +330,13 @@ struct Matrix {
                     nearItem = currentItem.nearItemByDirection(direction)
                 }
                 
-                
+                if currentItem !== item {
+                    arrangedItemCount += 1
+                }
             }
         }
+        
+        return arrangedItemCount
         
     }
     
