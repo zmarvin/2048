@@ -45,6 +45,7 @@ class MatrixView: UIView {
                 self.addSubview(view)
                 view.setTitle(String(number), for: UIControlState.normal)
                 view.setTitleColor(UIColor.white, for: UIControlState.normal)
+                view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
                 view.isHidden = true
                 
                 itemViews.append(view)
