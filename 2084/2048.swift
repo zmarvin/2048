@@ -42,17 +42,17 @@ class MatrixView: UIView {
                 let view = UIButton()
                 view.isEnabled = false
                 view.backgroundColor = UIColor.orange
-                self.addSubview(view)
                 view.setTitle(String(number), for: UIControlState.normal)
                 view.setTitleColor(UIColor.white, for: UIControlState.normal)
                 view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
                 view.isHidden = true
                 
+                self.addSubview(view)
                 itemViews.append(view)
             }
         }
         
-        // random create 3 item At the time of initialization
+        // random create 3 item during initialization
         for _ in 0...2 {
             matrix.createOneRandomItemNumber()
         }
@@ -69,20 +69,20 @@ class MatrixView: UIView {
             assert(indexIsValidForRow(row: row, column: column), "Index out of range")
             return itemViews[(row * columns) + column]
         }
-        /* grid array unnecessary setter
+        /* items array unnecessary setter
          set {
          assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-         grid[(row * columns) + column] = newValue
+         items[(row * columns) + column] = newValue
          }
          */
     }
     
     func reloadSubViews()  {
         
-        for item in matrix.grid {
+        for item in matrix.items {
             let row = item.row
             let column = item.column
-            let number = matrix.grid[(row * columns) + column].number
+            let number = matrix.items[(row * columns) + column].number
             let itemView = self[row ,column]
             itemView.isHidden = number == 0 ? true : false
             itemView.setTitle(String(number), for: UIControlState.normal)
@@ -100,7 +100,7 @@ class MatrixView: UIView {
         let viewWitdh = ( slWidth  - CGFloat((columns+1)*margin) )/CGFloat(self.columns)
         let viewHeight = ( slHeight  - CGFloat((rows+1)*margin) )/CGFloat(self.rows)
         
-        for item in matrix.grid{
+        for item in matrix.items{
             let row = item.row
             let column = item.column
             
@@ -166,7 +166,7 @@ struct Matrix {
     var ultimateNumber: Int
     var isHaveUnoccupiedItem: Bool
     
-    var grid: [Item]
+    var items: [Item]
     var used: [Item]
     var unused: [Item]
     
@@ -177,9 +177,10 @@ struct Matrix {
         self.isHaveUnoccupiedItem = true
         self.ultimateNumber = 0
         
-        grid = Array()
+        items = Array()
         used = Array()
         unused = Array()
+        
         for row in 0..<rows {
             for column in 0..<columns {
                 let item = Item(number: 0)
@@ -187,29 +188,26 @@ struct Matrix {
                 item.column = column
                 
                 unused.append(item)
-                grid.append(item)
+                items.append(item)
             }
         }
+        
         for row in 0..<rows {
             for column in 0..<columns {
                 
-                let item = grid[(row * columns) + column]
+                let item = items[(row * columns) + column]
                 
-                var columnSub = column - 1
-                var columnAdd = column + 1
-                var rowSub = row - 1
-                var rowAdd = row + 1
+                let columnSub = column - 1
+                let columnAdd = column + 1
+                let rowSub = row - 1
+                let rowAdd = row + 1
                 
                 // 判断是否在边界
-                if columnSub < 0             {columnSub = self.columns-1;item.isLeftBorder = true}
-                if columnAdd >= self.columns {columnAdd = 0;item.isRightBorder = true}
-                if rowSub    < 0             {rowSub = self.rows-1;item.isUpBorder = true}
-                if rowAdd    >= self.rows    {rowAdd = 0;item.isDownBorder = true}
-                
-                item.left  = grid[(row * columns) + columnSub]
-                item.right = grid[(row * columns) + columnAdd]
-                item.up    = grid[(rowSub * columns) + column]
-                item.down  = grid[(rowAdd * columns) + column]
+                if columnSub >= 0           {item.left  = items[(row * columns) + columnSub]}
+                if columnAdd < self.columns {item.right = items[(row * columns) + columnAdd]}
+                if rowSub    >= 0           {item.up    = items[(rowSub * columns) + column]}
+                if rowAdd    < self.rows    {item.down  = items[(rowAdd * columns) + column]}
+
             }
         }
     }
@@ -222,12 +220,12 @@ struct Matrix {
     subscript(row: Int, column: Int) -> Item {
         get {
             assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            return grid[(row * columns) + column]
+            return items[(row * columns) + column]
         }
-        /* grid array unnecessary setter
+        /* items array unnecessary setter
         set {
             assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            grid[(row * columns) + column] = newValue
+            items[(row * columns) + column] = newValue
         }
          */
     }
@@ -257,14 +255,8 @@ struct Matrix {
             return
         }
         
-        let randomRow = unused[randomNumber(unusedCount)].row
-        let randomColumn = unused[randomNumber(unusedCount)].column
-        let item = self[randomRow,randomColumn]
-        
-        if item.number != 0 {
-//            print("被覆盖了number:\(item.number) randomRow: \(randomRow) randomColumn:\(randomColumn) ")
-            return
-        }
+        let item = unused[randomNumber(unusedCount)]
+
         item.number = 2
         
         objc_sync_enter(self)
@@ -310,12 +302,12 @@ struct Matrix {
                 let item = self[row, column]
                 
                 if item.number == 0 { continue }
+                if item.isBorderInDirection(direction) { continue }
                 
-                var nearItem = item.nearItemByDirection(direction)
-                
+                var nearItem = item.nearItemInDirection(direction)
                 var currentItem = item
                 
-                while !currentItem.isBorderByDirection(direction) && (nearItem?.number == 0 || currentItem.number == nearItem?.number) {
+                while !currentItem.isBorderInDirection(direction) && (nearItem?.number == 0 || currentItem.number == nearItem?.number) {
                     
                     transferItemNumber(nearItem!, from: currentItem)
                     
@@ -328,7 +320,7 @@ struct Matrix {
                     objc_sync_exit(self)
                     
                     currentItem = nearItem!
-                    nearItem = currentItem.nearItemByDirection(direction)
+                    nearItem = currentItem.nearItemInDirection(direction)
                 }
                 
                 if currentItem !== item {
@@ -374,32 +366,26 @@ class Item {
     var row = 0
     var column = 0
     
-    var isLeftBorder ,isRightBorder ,isUpBorder ,isDownBorder  : Bool
-    
     var left ,right ,up ,down : Item?
     init(number : Int) {
         self.number = number
-        self.isLeftBorder = false
-        self.isRightBorder = false
-        self.isUpBorder = false
-        self.isDownBorder = false
     }
     
     
-    func isBorderByDirection(_ direction : MoveDirection) -> Bool{
+    func isBorderInDirection(_ direction : MoveDirection) -> Bool{
         switch direction {
         case .left:
-            return self.isLeftBorder
+            return self.left == nil
         case .right:
-            return self.isRightBorder
+            return self.right == nil
         case .up:
-            return self.isUpBorder
+            return self.up == nil
         case .down:
-            return self.isDownBorder
+            return self.down == nil
         }
     }
     
-    func nearItemByDirection(_ direction : MoveDirection) -> (Item?){
+    func nearItemInDirection(_ direction : MoveDirection) -> (Item?){
         switch direction {
         case .left:
             return self.left
