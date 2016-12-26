@@ -54,7 +54,7 @@ class MatrixView: UIView {
         
         // random create 3 item during initialization
         for _ in 0...2 {
-            matrix.createOneRandomItemNumber()
+            matrix.presentOneRandomItem()
         }
         
         reloadSubViews()
@@ -235,14 +235,14 @@ struct Matrix {
         let arrangedItemCount = arrangeMatrix(direction)
         
         if arrangedItemCount > 0 {
-            createOneRandomItemNumber()
+            presentOneRandomItem()
         }
         
 //        print("已使用:\(used.count) ---\n---\(used)")
 //        print("未使用:\(unused.count) ---\n---\(unused)")
     }
     
-    mutating func createOneRandomItemNumber() {
+    mutating func presentOneRandomItem() {
         
         func randomNumber(_ number: Int) -> Int {
             return Int(arc4random_uniform(UInt32(number)))
