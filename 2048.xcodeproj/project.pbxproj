@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A3CE3171E12359800470922 /* Decorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3CE3161E12359800470922 /* Decorator.swift */; };
 		3A4317981E0ACD63005A779C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4317971E0ACD63005A779C /* AppDelegate.swift */; };
 		3A43179A1E0ACD63005A779C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4317991E0ACD63005A779C /* ViewController.swift */; };
 		3A43179D1E0ACD63005A779C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A43179B1E0ACD63005A779C /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A3CE3161E12359800470922 /* Decorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decorator.swift; sourceTree = "<group>"; };
 		3A4317941E0ACD63005A779C /* 2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4317971E0ACD63005A779C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4317991E0ACD63005A779C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 		3A4317961E0ACD63005A779C /* 2048 */ = {
 			isa = PBXGroup;
 			children = (
+				3A3CE3161E12359800470922 /* Decorator.swift */,
 				3A4317AC1E0ACD77005A779C /* 2048.swift */,
 				3A4317971E0ACD63005A779C /* AppDelegate.swift */,
 				3A4317991E0ACD63005A779C /* ViewController.swift */,
@@ -68,7 +71,7 @@
 				3A43179E1E0ACD63005A779C /* _084.xcdatamodeld */,
 			);
 			name = 2048;
-			path = 2084;
+			path = 2048;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,7 +90,7 @@
 			dependencies = (
 			);
 			name = 2048;
-			productName = 2084;
+			productName = 2048;
 			productReference = 3A4317941E0ACD63005A779C /* 2048.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A43179A1E0ACD63005A779C /* ViewController.swift in Sources */,
+				3A3CE3171E12359800470922 /* Decorator.swift in Sources */,
 				3A4317A01E0ACD63005A779C /* _084.xcdatamodeld in Sources */,
 				3A4317981E0ACD63005A779C /* AppDelegate.swift in Sources */,
 				3A4317AD1E0ACD77005A779C /* 2048.swift in Sources */,
@@ -269,7 +273,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3G867EH2KH;
-				INFOPLIST_FILE = 2084/Info.plist;
+				INFOPLIST_FILE = 2048/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zz.-084";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -282,7 +286,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3G867EH2KH;
-				INFOPLIST_FILE = 2084/Info.plist;
+				INFOPLIST_FILE = 2048/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "zz.-084";
 				PRODUCT_NAME = "$(TARGET_NAME)";

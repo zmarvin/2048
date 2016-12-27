@@ -65,16 +65,10 @@ class MatrixView: UIView {
     }
     
     subscript(row: Int, column: Int) -> UIButton {
-        get {
-            assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            return itemViews[(row * columns) + column]
-        }
-        /* items array unnecessary setter
-         set {
-         assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-         items[(row * columns) + column] = newValue
-         }
-         */
+        
+        assert(indexIsValidForRow(row: row, column: column), "Index out of range")
+        return itemViews[(row * columns) + column]
+
     }
     
     func reloadSubViews()  {
@@ -218,16 +212,10 @@ struct Matrix {
     }
     
     subscript(row: Int, column: Int) -> Item {
-        get {
-            assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            return items[(row * columns) + column]
-        }
-        /* items array unnecessary setter
-        set {
-            assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-            items[(row * columns) + column] = newValue
-        }
-         */
+        
+        assert(indexIsValidForRow(row: row, column: column), "Index out of range")
+        return items[(row * columns) + column]
+        
     }
     
     mutating func reloadMatrix(_ direction : MoveDirection) {
@@ -238,8 +226,6 @@ struct Matrix {
             presentOneRandomItem()
         }
         
-//        print("已使用:\(used.count) ---\n---\(used)")
-//        print("未使用:\(unused.count) ---\n---\(unused)")
     }
     
     mutating func presentOneRandomItem() {
@@ -250,7 +236,6 @@ struct Matrix {
         
         let unusedCount = unused.count
         if unusedCount == 0{
-//            print("已没有空闲item")
             isHaveUnoccupiedItem = false
             return
         }
@@ -370,7 +355,6 @@ class Item {
     init(number : Int) {
         self.number = number
     }
-    
     
     func isBorderInDirection(_ direction : MoveDirection) -> Bool{
         switch direction {
