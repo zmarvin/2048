@@ -102,7 +102,7 @@ class MatrixView: UIView {
             let viewY = CGFloat(row*margin + margin) + viewHeight * CGFloat(row)
             
             let itemView = self[row ,column]
-            itemView.frame = CGRect.init(x:viewX, y: viewY, width: viewWitdh, height: viewHeight)
+            itemView.frame = CGRect(x:viewX, y: viewY, width: viewWitdh, height: viewHeight)
         }
     }
     
@@ -351,7 +351,7 @@ class Item {
     var row = 0
     var column = 0
     
-    var left ,right ,up ,down : Item?
+    weak var left ,right ,up ,down : Item?
     init(number : Int) {
         self.number = number
     }

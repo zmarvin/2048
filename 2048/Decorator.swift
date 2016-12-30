@@ -18,8 +18,6 @@ class DecoratorView: MatrixView {
     var gridColor : UIColor = UIColor.orange
     var backgroundViewColor : UIColor = UIColor.brown
     var numberTextColor : UIColor = UIColor.white
-    
-    
 
 }
 
