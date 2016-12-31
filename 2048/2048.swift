@@ -10,15 +10,17 @@ import Foundation
 import UIKit
 
 class MatrixView: UIView {
-    var maxNumber: Int
-    private var matrix: Matrix
-    private var rows ,columns : Int
-    private var itemViews = [UIButton]()
+    open var maxNumber: Int
+    open var isHaveUnoccupiedView: Bool
+    fileprivate var matrix: Matrix
+    fileprivate var rows ,columns : Int
+    fileprivate var itemViews = [UIButton]()
     
-    public init(rows: Int, columns: Int) {
+    init(rows: Int, columns: Int) {
         self.rows = rows
         self.columns = columns
         self.maxNumber = 0
+        isHaveUnoccupiedView = false
         self.matrix = Matrix(rows: rows, columns:columns)
         super.init(frame: CGRect.zero)
         
@@ -157,12 +159,12 @@ class MatrixView: UIView {
 struct Matrix {
     
     let rows, columns: Int
-    var ultimateNumber: Int
-    var isHaveUnoccupiedItem: Bool
+    fileprivate var ultimateNumber: Int
+    fileprivate var isHaveUnoccupiedItem: Bool
     
-    var items: [Item]
-    var used: [Item]
-    var unused: [Item]
+    fileprivate var items: [Item]
+    fileprivate var used: [Item]
+    fileprivate var unused: [Item]
     
     init(rows: Int, columns: Int) {
         
@@ -347,11 +349,11 @@ struct Matrix {
 }
 
 class Item {
-    var number = 0
-    var row = 0
-    var column = 0
+    open var number = 0
+    open var row = 0
+    open var column = 0
     
-    weak var left ,right ,up ,down : Item?
+    fileprivate weak var left ,right ,up ,down : Item?
     init(number : Int) {
         self.number = number
     }
