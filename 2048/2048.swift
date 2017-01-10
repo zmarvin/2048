@@ -27,6 +27,9 @@ class MatrixView: UIView {
         self.matrix = Matrix(rows: rows, columns:columns)
         super.init(frame: CGRect.zero)
         
+        // default setter state
+        self.backgroundColor = UIColor.brown
+        
         finishInit()
     }
     
@@ -57,9 +60,6 @@ class MatrixView: UIView {
                 view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
             }
         }
-        
-        // default setter state
-        self.backgroundColor = UIColor.brown
         
         // random create 3 item during initialization
         for _ in 0...2 {

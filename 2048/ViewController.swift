@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         let decorator2048Y = CGFloat(100)
         let decorator2048W = UIScreen.main.bounds.width - 2*10
         let decorator2048H = UIScreen.main.bounds.height - decorator2048Y - 2*10
-        decorator2048.frame = CGRect.init(x: decorator2048X, y: decorator2048Y, width: decorator2048W, height: decorator2048H)
+        decorator2048.frame = CGRect(x: decorator2048X, y: decorator2048Y, width: decorator2048W, height: decorator2048H)
         self.view.addSubview(decorator2048)
     }
 

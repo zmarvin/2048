@@ -9,28 +9,19 @@
 import Foundation
 import UIKit
 
+protocol DecoratorProtocol {}
 
-protocol DecoratorProtocol {
+extension DecoratorProtocol where Self:MatrixView{
     
-    var fontValue : UIFont {get}
-    var animation : Bool {get}
-    var animationInterval : Int {get}
-    var itemColor : UIColor {get}
-    var wallpaperColor : UIColor {get}
-    var numberTextColor : UIColor {get}
-    
-}
-
-class Decorator2048: MatrixView ,DecoratorProtocol{
-    
-    var fontValue : UIFont {
-        return UIFont.boldSystemFont(ofSize: 25)
-    }
+    var fontValue : UIFont {return UIFont.boldSystemFont(ofSize: 25)}
     var animation : Bool {return false}
     var animationInterval : Int {return 2}
     var itemColor : UIColor {return UIColor.orange}
     var wallpaperColor : UIColor {return UIColor.brown}
     var numberTextColor : UIColor {return UIColor.white}
+}
+
+class Decorator2048: MatrixView ,DecoratorProtocol{
     
     override init(rows: Int, columns: Int) {
         super.init(rows: rows, columns: columns)
