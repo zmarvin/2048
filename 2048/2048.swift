@@ -12,7 +12,10 @@ import UIKit
 class MatrixView: UIView {
     open var maxNumber: Int
     open var isHaveUnoccupiedView: Bool
-    fileprivate var matrix: Matrix
+    open var selfWidth: CGFloat?
+    
+    var matrix: Matrix
+    
     fileprivate var rows ,columns : Int
     fileprivate var itemViews = [UIButton]()
     
@@ -43,16 +46,20 @@ class MatrixView: UIView {
                 
                 let view = UIButton()
                 view.isEnabled = false
-                view.backgroundColor = UIColor.orange
                 view.setTitle(String(number), for: UIControlState.normal)
-                view.setTitleColor(UIColor.white, for: UIControlState.normal)
-                view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
                 view.isHidden = true
-                
                 self.addSubview(view)
                 itemViews.append(view)
+                
+                // default setter state
+                view.backgroundColor = UIColor.orange
+                view.setTitleColor(UIColor.white, for: UIControlState.normal)
+                view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
             }
         }
+        
+        // default setter state
+        self.backgroundColor = UIColor.brown
         
         // random create 3 item during initialization
         for _ in 0...2 {
@@ -90,7 +97,7 @@ class MatrixView: UIView {
         
         super.layoutSubviews()
         
-        let slWidth = self.frame.width
+        let slWidth = selfWidth ?? self.frame.width
         let slHeight = slWidth
         let margin = 5
         let viewWitdh = ( slWidth  - CGFloat((columns+1)*margin) )/CGFloat(self.columns)
