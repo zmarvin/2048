@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 class MatrixView: UIView {
     open var maxNumber: Int
     open var isHaveUnoccupiedView: Bool
@@ -80,7 +81,7 @@ class MatrixView: UIView {
 
     }
     
-    func reloadSubViews()  {
+    func reloadSubViews() {
         
         for item in matrix.items {
             let row = item.row
@@ -123,23 +124,19 @@ class MatrixView: UIView {
             
             self.isUserInteractionEnabled = false
             
-            if gesture.translation(in: self).x < -1 {
+            if gesture.translation(in: self).x < -1 { // 左划
                 maxNumber = move(.left)
-                print("左划")
             }
-            if gesture.translation(in: self).x > 1 {
+            if gesture.translation(in: self).x > 1 { // 右划
                 maxNumber = move(.right)
-                print("右划")
             }
             
-            if gesture.translation(in: self).y > 1 {
+            if gesture.translation(in: self).y > 1 { // 下划
                 maxNumber = move(.down)
-                print("下划")
             }
             
-            if gesture.translation(in: self).y < -1 {
+            if gesture.translation(in: self).y < -1 { // 上划
                 maxNumber = move(.up)
-                print("上划")
             }
         case .changed:break
             
@@ -169,7 +166,7 @@ struct Matrix {
     fileprivate var ultimateNumber: Int
     fileprivate var isHaveUnoccupiedItem: Bool
     
-    fileprivate var items: [Item]
+    internal var items: [Item]
     fileprivate var used: [Item]
     fileprivate var unused: [Item]
     
