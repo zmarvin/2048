@@ -1,169 +1,19 @@
 //
-//  2048.swift
-//  SwiftPractise
+//  Matrix.swift
+//  2048
 //
-//  Created by zz on 2016/12/21.
-//  Copyright © 2016年 zz. All rights reserved.
+//  Created by zz on 2017/1/30.
+//  Copyright © 2017年 zz. All rights reserved.
 //
 
 import Foundation
-import UIKit
 
-
-class MatrixView: UIView {
-    open var maxNumber: Int
-    open var isHaveUnoccupiedView: Bool
-    open var selfWidth: CGFloat?
-    
-    var matrix: Matrix
-    
-    fileprivate var rows ,columns : Int
-    fileprivate var itemViews = [UIButton]()
-    
-    init(rows: Int, columns: Int) {
-        self.rows = rows
-        self.columns = columns
-        self.maxNumber = 0
-        isHaveUnoccupiedView = false
-        self.matrix = Matrix(rows: rows, columns:columns)
-        super.init(frame: CGRect.zero)
-        
-        // default setter state
-        self.backgroundColor = UIColor.brown
-        
-        finishInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    fileprivate func finishInit() {
-        // Setup views
-        let gesture = UIPanGestureRecognizer()
-        gesture.addTarget(self, action: #selector(MatrixView.gestureCall(gesture:)))
-        self.addGestureRecognizer(gesture)
-        
-        for column in 0..<columns {
-            for row in 0..<rows {
-                let number = matrix[row ,column].number
-                
-                let view = UIButton()
-                view.isEnabled = false
-                view.setTitle(String(number), for: UIControlState.normal)
-                view.isHidden = true
-                self.addSubview(view)
-                itemViews.append(view)
-                
-                // default setter state
-                view.backgroundColor = UIColor.orange
-                view.setTitleColor(UIColor.white, for: UIControlState.normal)
-                view.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
-            }
-        }
-        
-        // random create 3 item during initialization
-        for _ in 0...2 {
-            matrix.presentOneRandomItem()
-        }
-        
-        reloadSubViews()
-    }
-    
-    func indexIsValidForRow(row: Int, column: Int) -> Bool {
-        return row >= 0 && row < rows && column >= 0 && column < columns
-    }
-    
-    subscript(row: Int, column: Int) -> UIButton {
-        
-        assert(indexIsValidForRow(row: row, column: column), "Index out of range")
-        return itemViews[(row * columns) + column]
-
-    }
-    
-    func reloadSubViews() {
-        
-        for item in matrix.items {
-            let row = item.row
-            let column = item.column
-            let number = matrix.items[(row * columns) + column].number
-            let itemView = self[row ,column]
-            itemView.isHidden = number == 0 ? true : false
-            itemView.setTitle(String(number), for: UIControlState.normal)
-        }
-        
-    }
-    
-    override func layoutSubviews() {
-        
-        super.layoutSubviews()
-        
-        let slWidth = selfWidth ?? self.frame.width
-        let slHeight = slWidth
-        let margin = 5
-        let viewWitdh = ( slWidth  - CGFloat((columns+1)*margin) )/CGFloat(self.columns)
-        let viewHeight = ( slHeight  - CGFloat((rows+1)*margin) )/CGFloat(self.rows)
-        
-        for item in matrix.items{
-            let row = item.row
-            let column = item.column
-            
-            let viewX = CGFloat(column*margin + margin) + viewWitdh * CGFloat(column)
-            let viewY = CGFloat(row*margin + margin) + viewHeight * CGFloat(row)
-            
-            let itemView = self[row ,column]
-            itemView.frame = CGRect(x:viewX, y: viewY, width: viewWitdh, height: viewHeight)
-        }
-    }
-    
-    
-    func gestureCall(gesture :UIPanGestureRecognizer) {
-        
-        switch gesture.state {
-        case .began:
-            
-            self.isUserInteractionEnabled = false
-            
-            if gesture.translation(in: self).x < -1 { // 左划
-                maxNumber = move(.left)
-            }
-            if gesture.translation(in: self).x > 1 { // 右划
-                maxNumber = move(.right)
-            }
-            
-            if gesture.translation(in: self).y > 1 { // 下划
-                maxNumber = move(.down)
-            }
-            
-            if gesture.translation(in: self).y < -1 { // 上划
-                maxNumber = move(.up)
-            }
-        case .changed:break
-            
-        case .ended,.failed,.cancelled:
-            self.isUserInteractionEnabled = true
-            
-        default:
-            self.isUserInteractionEnabled = true
-            
-        }
-    }
-    
-    func move(_ direction : MoveDirection) -> Int {
-        
-        matrix.reloadMatrix(direction)
-        
-        reloadSubViews()
-        
-        return matrix.ultimateNumber
-    }
-    
-}
 
 struct Matrix {
     
     let rows, columns: Int
-    fileprivate var ultimateNumber: Int
+    var ultimateNumber: Int
+    var totalNumber: Int = 0
     fileprivate var isHaveUnoccupiedItem: Bool
     
     internal var items: [Item]
@@ -207,7 +57,7 @@ struct Matrix {
                 if columnAdd < self.columns {item.right = items[(row * columns) + columnAdd]}
                 if rowSub    >= 0           {item.up    = items[(rowSub * columns) + column]}
                 if rowAdd    < self.rows    {item.down  = items[(rowAdd * columns) + column]}
-
+                
             }
         }
     }
@@ -232,6 +82,11 @@ struct Matrix {
             presentOneRandomItem()
         }
         
+        totalNumber = 0
+        for item in used {
+            totalNumber += item.number
+        }
+        
     }
     
     mutating func presentOneRandomItem() {
@@ -247,7 +102,7 @@ struct Matrix {
         }
         
         let item = unused[randomNumber(unusedCount)]
-
+        
         item.number = 2
         
         objc_sync_enter(self)
@@ -259,20 +114,19 @@ struct Matrix {
     
     mutating func arrangeMatrix(_ direction : MoveDirection) -> Int{
         
-        
         func transferItemNumber(_ nearItem : Item , from item: Item){
             
             if nearItem.number == item.number{
                 nearItem.number = 2 * item.number
                 item.number = 0
-                if ultimateNumber < nearItem.number {
+                if ultimateNumber <= nearItem.number {
                     ultimateNumber = nearItem.number
                 }
             }else{
                 nearItem.number = item.number
                 item.number = 0
             }
-            
+
         }
         
         var arrangedItemCount : Int = 0
@@ -358,6 +212,7 @@ class Item {
     open var column = 0
     
     fileprivate weak var left ,right ,up ,down : Item?
+    
     init(number : Int) {
         self.number = number
     }

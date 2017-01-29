@@ -10,30 +10,36 @@ import Foundation
 import UIKit
 
 protocol DecoratorProtocol {
-
+    
+    func reloadSubViewsComplete(decorator2048View:Decorator2048)
 }
 
-extension DecoratorProtocol where Self:MatrixView{
+extension Decorator2048{
     
     var fontValue : UIFont {return UIFont.boldSystemFont(ofSize: 25)}
     var animation : Bool {return false}
     var animationInterval : Int {return 2}
     var itemColor : UIColor {return UIColor.orange}
+    var itemBackgroundColor : UIColor {return UIColor.darkGray}
     var wallpaperColor : UIColor {return UIColor.brown}
     var numberTextColor : UIColor {return UIColor.white}
 }
 
-class Decorator2048: MatrixView ,DecoratorProtocol{
+class Decorator2048: MatrixView{
+    
+    open var delegate : DecoratorProtocol?
     
     override init(rows: Int, columns: Int) {
         super.init(rows: rows, columns: columns)
         
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 8
         self.backgroundColor = wallpaperColor
         
         for column in 0..<columns {
             for row in 0..<rows {
                 let itemView = self[row ,column]
-                itemView.backgroundColor = itemColor
+                itemView.backgroundColor = itemBackgroundColor
                 itemView.setTitleColor(numberTextColor, for: UIControlState.normal)
                 itemView.titleLabel?.font = fontValue
                 itemView.layer.cornerRadius = 8
@@ -46,17 +52,23 @@ class Decorator2048: MatrixView ,DecoratorProtocol{
     }
     
     override func reloadSubViews() {
-        
+
         for item in self.matrix.items {
             
             let number = item.number
             let itemView = self[item.row ,item.column]
-            itemView.isHidden = number == 0 ? true : false
+//            itemView.isHidden = number == 0 ? true : false
             itemView.setTitle(String(number), for: UIControlState.normal)
-            
             if number != 0 {
                 itemView.backgroundColor = NumberColor.color(colorValue: number)
+            }else{
+                itemView.backgroundColor = itemBackgroundColor
+                itemView .setTitle("", for: .normal)
             }
+        }
+        
+        if let delegate = self.delegate {
+            delegate.reloadSubViewsComplete(decorator2048View: self)
         }
     }
     
