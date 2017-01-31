@@ -21,6 +21,7 @@ class MatrixView: UIView {
     open var isHaveUnoccupiedView: Bool
     open var selfWidth: CGFloat?
     open var delegate : MatrixViewProtocol?
+    open var moveGestureComplete : ((_ matrixView:MatrixView)->Void)?
     
     var matrix: Matrix
     
@@ -180,6 +181,9 @@ class MatrixView: UIView {
         
         if let delegate = self.delegate {
             delegate.moveGestureComplete(matrixView: self)
+        }
+        if let moveGestureComplete = self.moveGestureComplete {
+            moveGestureComplete(self)
         }
     }
     
