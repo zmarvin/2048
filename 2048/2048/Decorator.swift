@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-protocol DecoratorProtocol {
-    
-    func reloadSubViewsComplete(decorator2048View:Decorator2048)
-}
 
 extension Decorator2048{
     
@@ -26,8 +22,6 @@ extension Decorator2048{
 }
 
 class Decorator2048: MatrixView{
-    
-    open var delegate : DecoratorProtocol?
     
     override init(rows: Int, columns: Int) {
         super.init(rows: rows, columns: columns)
@@ -57,7 +51,6 @@ class Decorator2048: MatrixView{
             
             let number = item.number
             let itemView = self[item.row ,item.column]
-//            itemView.isHidden = number == 0 ? true : false
             itemView.setTitle(String(number), for: UIControlState.normal)
             if number != 0 {
                 itemView.backgroundColor = NumberColor.color(colorValue: number)
@@ -67,9 +60,6 @@ class Decorator2048: MatrixView{
             }
         }
         
-        if let delegate = self.delegate {
-            delegate.reloadSubViewsComplete(decorator2048View: self)
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {

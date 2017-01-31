@@ -74,19 +74,11 @@ struct Matrix {
         
     }
     
-    mutating func reloadMatrix(_ direction : MoveDirection) {
-        
-        let arrangedItemCount = arrangeMatrix(direction)
-        
-        if arrangedItemCount > 0 {
-            presentOneRandomItem()
-        }
-        
+    mutating func refreshTotalNumber() {
         totalNumber = 0
         for item in used {
             totalNumber += item.number
         }
-        
     }
     
     mutating func presentOneRandomItem() {
@@ -110,9 +102,12 @@ struct Matrix {
         removeItem(array: &unused, item: item)
         objc_sync_exit(self)
         
+        refreshTotalNumber()
+        
     }
     
-    mutating func arrangeMatrix(_ direction : MoveDirection) -> Int{
+    @discardableResult
+    mutating func reloadMatrix(_ direction : MoveDirection) -> Int{
         
         func transferItemNumber(_ nearItem : Item , from item: Item){
             
@@ -172,6 +167,10 @@ struct Matrix {
                     arrangedItemCount += 1
                 }
             }
+        }
+        
+        if arrangedItemCount > 0 {
+            presentOneRandomItem()
         }
         
         return arrangedItemCount

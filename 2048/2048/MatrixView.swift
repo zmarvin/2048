@@ -9,12 +9,18 @@
 import Foundation
 import UIKit
 
+protocol MatrixViewProtocol {
+    
+    func moveGestureComplete(matrixView:MatrixView)
+}
+
 
 class MatrixView: UIView {
     open var maxNumber: Int
     open var totalNumber: Int
     open var isHaveUnoccupiedView: Bool
     open var selfWidth: CGFloat?
+    open var delegate : MatrixViewProtocol?
     
     var matrix: Matrix
     
@@ -67,7 +73,6 @@ class MatrixView: UIView {
                 
                 item.isEnabled = false
                 item.setTitle(String(number), for: UIControlState.normal)
-//                item.isHidden = true
                 
                 // default setter state
                 item.backgroundColor = UIColor.orange
@@ -82,6 +87,7 @@ class MatrixView: UIView {
         }
         
         reloadSubViews()
+        
     }
     
     func indexIsValidForRow(row: Int, column: Int) -> Bool {
@@ -102,7 +108,6 @@ class MatrixView: UIView {
             let column = item.column
             let number = matrix.items[(row * columns) + column].number
             let itemView = self[row ,column]
-//            itemView.isHidden = number == 0 ? true : false
             itemView.setTitle(String(number), for: UIControlState.normal)
         }
         
@@ -172,6 +177,10 @@ class MatrixView: UIView {
         totalNumber = matrix.totalNumber
         
         maxNumber = matrix.ultimateNumber
+        
+        if let delegate = self.delegate {
+            delegate.moveGestureComplete(matrixView: self)
+        }
     }
     
 }

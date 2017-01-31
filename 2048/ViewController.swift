@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController ,DecoratorProtocol{
+class ViewController: UIViewController ,MatrixViewProtocol{
     
     var scoreLabel:UILabel!
     var maxNumberLabel:UILabel!
@@ -31,6 +31,13 @@ class ViewController: UIViewController ,DecoratorProtocol{
         setUpMaxNumberView()
     }
 
+    func moveGestureComplete(matrixView: MatrixView) {
+        
+        scoreLabel.text = "总得分：" + String(matrixView.totalNumber)
+        maxNumberLabel.text = "最大数：" + String(matrixView.maxNumber)
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -40,21 +47,17 @@ class ViewController: UIViewController ,DecoratorProtocol{
         scoreLabel = UILabel(frame: CGRect(x: 10, y: 40, width: UIScreen.main.bounds.width * 0.5 - 20, height: 120))
         self.view.addSubview(scoreLabel)
         scoreLabel.backgroundColor = UIColor.orange
-        scoreLabel.text = "得分：0"
+        scoreLabel.text = "总得分：6"
     }
     
     func setUpMaxNumberView() {
         let labelX = scoreLabel.frame.size.width + 2*10
-        maxNumberLabel = UILabel(frame: CGRect(x: labelX + 10, y: 40, width: UIScreen.main.bounds.width - labelX - 10, height: 120))
+        maxNumberLabel = UILabel(frame: CGRect(x: labelX + 10, y: 40, width: UIScreen.main.bounds.width - labelX - 20, height: 120))
         self.view.addSubview(maxNumberLabel)
         maxNumberLabel.backgroundColor = UIColor.orange
-        maxNumberLabel.text = "最大数：0"
+        maxNumberLabel.text = "最大数：2"
     }
     
-    func reloadSubViewsComplete(decorator2048View: Decorator2048) {
-        
-        scoreLabel.text = "得分：" + String(decorator2048View.totalNumber)
-        maxNumberLabel.text = "最大数：" + String(decorator2048View.maxNumber)
-    }
+    
 }
 
