@@ -28,8 +28,10 @@ class ViewController: UIViewController ,MatrixViewProtocol{
         self.view.addSubview(decorator2048)
         decorator2048.delegate = self
         decorator2048.moveGestureComplete = {[unowned self] (matrixView:MatrixView)->Void in
-            self.scoreLabel.text = "总得分：" + String(matrixView.totalNumber)
-            self.maxNumberLabel.text = "最大数：" + String(matrixView.maxNumber)
+            self.moveGestureComplete(matrixView: matrixView)
+        }
+        if let temp = decorator2048.moveGestureComplete {
+            temp(decorator2048)
         }
         
     }
@@ -45,7 +47,7 @@ class ViewController: UIViewController ,MatrixViewProtocol{
         scoreLabel = UILabel(frame: CGRect(x: 10, y: 40, width: UIScreen.main.bounds.width * 0.5 - 20, height: 120))
         self.view.addSubview(scoreLabel)
         scoreLabel.backgroundColor = UIColor.orange
-        scoreLabel.text = "总得分：6"
+        scoreLabel.text = "总得分："
     }
     
     func setUpMaxNumberView() {
@@ -53,7 +55,7 @@ class ViewController: UIViewController ,MatrixViewProtocol{
         maxNumberLabel = UILabel(frame: CGRect(x: labelX + 10, y: 40, width: UIScreen.main.bounds.width - labelX - 20, height: 120))
         self.view.addSubview(maxNumberLabel)
         maxNumberLabel.backgroundColor = UIColor.orange
-        maxNumberLabel.text = "最大数：2"
+        maxNumberLabel.text = "最大数："
     }
     
     

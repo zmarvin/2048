@@ -51,9 +51,10 @@ class Decorator2048: MatrixView{
             
             let number = item.number
             let itemView = self[item.row ,item.column]
-            itemView.setTitle(String(number), for: UIControlState.normal)
+            
             if number != 0 {
                 itemView.backgroundColor = NumberColor.color(colorValue: number)
+                itemView.setTitle(String(number), for: UIControlState.normal)
             }else{
                 itemView.backgroundColor = itemBackgroundColor
                 itemView .setTitle("", for: .normal)

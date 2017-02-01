@@ -48,32 +48,22 @@ class MatrixView: UIView {
         // default setter state
         self.backgroundColor = UIColor.brown
         
-        setUpItemViews()
-        
         gestureView.backgroundColor = UIColor.clear
         self.addSubview(gestureView)
         let gesture = UIPanGestureRecognizer()
         gesture.addTarget(self, action: #selector(MatrixView.gestureCall(gesture:)))
         gestureView.addGestureRecognizer(gesture)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    fileprivate func setUpItemViews() {
-        // Setup views
         
-        for column in 0..<columns {
-            for row in 0..<rows {
-                let number = matrix[row ,column].number
-                
+        
+        // setUpItemViews
+        for _ in 0..<columns {
+            for _ in 0..<rows {
                 let item = UIButton()
                 self.addSubview(item)
                 itemViews.append(item)
                 
                 item.isEnabled = false
-                item.setTitle(String(number), for: UIControlState.normal)
+                item.setTitle("", for: UIControlState.normal)
                 
                 // default setter state
                 item.backgroundColor = UIColor.orange
@@ -82,20 +72,27 @@ class MatrixView: UIView {
             }
         }
         
+        finishInit()
+        
+    }
+    
+    func finishInit() {
         // random create 3 item during initialization
         for _ in 0...2 {
             matrix.presentOneRandomItem()
         }
-        
         reloadSubViews()
-        
     }
     
-    func indexIsValidForRow(row: Int, column: Int) -> Bool {
-        return row >= 0 && row < rows && column >= 0 && column < columns
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     subscript(row: Int, column: Int) -> UIButton {
+        
+        func indexIsValidForRow(row: Int, column: Int) -> Bool {
+            return row >= 0 && row < rows && column >= 0 && column < columns
+        }
         
         assert(indexIsValidForRow(row: row, column: column), "Index out of range")
         return itemViews[(row * columns) + column]
@@ -105,11 +102,17 @@ class MatrixView: UIView {
     func reloadSubViews() {
 
         for item in matrix.items {
-            let row = item.row
-            let column = item.column
-            let number = matrix.items[(row * columns) + column].number
-            let itemView = self[row ,column]
-            itemView.setTitle(String(number), for: UIControlState.normal)
+            let number = item.number
+            let itemView = self[item.row ,item.column]
+            
+            if number == 0 {
+                itemView.setTitle("", for: .normal)
+                itemView.backgroundColor = UIColor.orange
+            }else{
+                itemView.setTitle(String(number), for: .normal)
+                itemView.backgroundColor = .red
+            }
+            
         }
         
     }
