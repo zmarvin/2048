@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct Matrix {
     
     let rows, columns: Int
@@ -16,7 +15,7 @@ struct Matrix {
     var totalNumber: Int = 0
     fileprivate var isHaveUnoccupiedItem: Bool
     
-    internal var items: [Item]
+    var items: [Item]
     fileprivate var used: [Item]
     fileprivate var unused: [Item]
     
@@ -188,7 +187,6 @@ struct Matrix {
     }
     
     func removeItem(array:inout [Item],item:Item) {
-        
         let index = array.index { (pItem) -> Bool in
             return pItem === item
         }
@@ -199,54 +197,10 @@ struct Matrix {
             if index != nil {
                 array.remove(at: index!)
             }
-            
+
         }
     }
     
 }
 
-class Item {
-    open var number = 0
-    open var row = 0
-    open var column = 0
-    
-    fileprivate weak var left ,right ,up ,down : Item?
-    
-    init(number : Int) {
-        self.number = number
-    }
-    
-    func isBorderInDirection(_ direction : MoveDirection) -> Bool{
-        switch direction {
-        case .left:
-            return self.left == nil
-        case .right:
-            return self.right == nil
-        case .up:
-            return self.up == nil
-        case .down:
-            return self.down == nil
-        }
-    }
-    
-    func nearItemInDirection(_ direction : MoveDirection) -> (Item?){
-        switch direction {
-        case .left:
-            return self.left
-        case .right:
-            return self.right
-        case .up:
-            return self.up
-        case .down:
-            return self.down
-        }
-    }
-    
-}
 
-enum MoveDirection {
-    case left
-    case right
-    case up
-    case down
-}

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController ,MatrixViewProtocol{
+class ViewController: UIViewController{
     
     var scoreLabel:UILabel!
     var maxNumberLabel:UILabel!
@@ -20,33 +20,21 @@ class ViewController: UIViewController ,MatrixViewProtocol{
         
         
         let decorator2048 = Decorator2048(rows: 4,columns: 4)
-        let decorator2048X = CGFloat(10)
-        let decorator2048Y = CGFloat(180)
-        let decorator2048W = UIScreen.main.bounds.width - 2*10
-        let decorator2048H = decorator2048W
-        decorator2048.frame = CGRect(x: decorator2048X, y: decorator2048Y, width: decorator2048W, height: decorator2048H)
         self.view.addSubview(decorator2048)
-        decorator2048.delegate = self
         decorator2048.moveGestureComplete = {[unowned self] (matrixView:MatrixView)->Void in
-            self.moveGestureComplete(matrixView: matrixView)
+            self.scoreLabel.text = "总得分：" + String(matrixView.totalNumber)
+            self.maxNumberLabel.text = "最大数：" + String(matrixView.maxNumber)
         }
-        if let temp = decorator2048.moveGestureComplete {
-            temp(decorator2048)
-        }
-        
-    }
+        let decorator2048SideLength = UIScreen.main.bounds.width - 2*10
+        decorator2048.frame = CGRect(x: CGFloat(10), y: CGFloat(180), width: decorator2048SideLength, height: decorator2048SideLength)
 
-    func moveGestureComplete(matrixView: MatrixView) {
-        
-        self.scoreLabel.text = "总得分：" + String(matrixView.totalNumber)
-        self.maxNumberLabel.text = "最大数：" + String(matrixView.maxNumber)
     }
-    
     
     func setUpTotleScoreView() {
         scoreLabel = UILabel(frame: CGRect(x: 10, y: 40, width: UIScreen.main.bounds.width * 0.5 - 20, height: 120))
         self.view.addSubview(scoreLabel)
         scoreLabel.backgroundColor = UIColor.orange
+        scoreLabel.textAlignment = .center
         scoreLabel.text = "总得分："
     }
     
@@ -55,6 +43,7 @@ class ViewController: UIViewController ,MatrixViewProtocol{
         maxNumberLabel = UILabel(frame: CGRect(x: labelX + 10, y: 40, width: UIScreen.main.bounds.width - labelX - 20, height: 120))
         self.view.addSubview(maxNumberLabel)
         maxNumberLabel.backgroundColor = UIColor.orange
+        maxNumberLabel.textAlignment = .center
         maxNumberLabel.text = "最大数："
     }
     

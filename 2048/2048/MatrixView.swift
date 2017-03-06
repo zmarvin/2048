@@ -50,9 +50,26 @@ class MatrixView: UIView {
         
         gestureView.backgroundColor = UIColor.clear
         self.addSubview(gestureView)
-        let gesture = UIPanGestureRecognizer()
-        gesture.addTarget(self, action: #selector(MatrixView.gestureCall(gesture:)))
-        gestureView.addGestureRecognizer(gesture)
+        
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MatrixView.gestureCall(gesture:)))
+        upSwipe.numberOfTouchesRequired = 1
+        upSwipe.direction = UISwipeGestureRecognizerDirection.up
+        gestureView.addGestureRecognizer(upSwipe)
+        
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MatrixView.gestureCall(gesture:)))
+        downSwipe.numberOfTouchesRequired = 1
+        downSwipe.direction = UISwipeGestureRecognizerDirection.down
+        gestureView.addGestureRecognizer(downSwipe)
+        
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MatrixView.gestureCall(gesture:)))
+        leftSwipe.numberOfTouchesRequired = 1
+        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
+        gestureView.addGestureRecognizer(leftSwipe)
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MatrixView.gestureCall(gesture:)))
+        rightSwipe.numberOfTouchesRequired = 1
+        rightSwipe.direction = UISwipeGestureRecognizerDirection.right
+        gestureView.addGestureRecognizer(rightSwipe)
         
         
         // setUpItemViews
@@ -140,36 +157,22 @@ class MatrixView: UIView {
     }
     
     
-    func gestureCall(gesture :UIPanGestureRecognizer) {
+    func gestureCall(gesture :UISwipeGestureRecognizer) {
         
-        switch gesture.state {
-        case .began:
+        switch gesture.direction {
             
-            self.isUserInteractionEnabled = false
-            
-            if gesture.translation(in: self).x < -0.5 { // 左划
-                move(.left)
-            }
-            if gesture.translation(in: self).x > 0.5 { // 右划
-                move(.right)
-            }
-            
-            if gesture.translation(in: self).y > 0.5 { // 下划
-                move(.down)
-            }
-            
-            if gesture.translation(in: self).y < -0.5 { // 上划
-                move(.up)
-            }
-        case .changed:break
-            
-        case .ended,.failed,.cancelled:
-            self.isUserInteractionEnabled = true
-            
+        case UISwipeGestureRecognizerDirection.up:
+            move(.up)
+        case UISwipeGestureRecognizerDirection.down:
+            move(.down)
+        case UISwipeGestureRecognizerDirection.right:
+            move(.right)
+        case UISwipeGestureRecognizerDirection.left:
+            move(.left)
         default:
-            self.isUserInteractionEnabled = true
-            
+            break;
         }
+        
     }
     
     func move(_ direction : MoveDirection){
