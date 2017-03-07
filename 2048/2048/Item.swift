@@ -15,7 +15,7 @@ enum MoveDirection {
     case down
 }
 
-class Item {
+class Item{
     open var number = 0
     open var row = 0
     open var column = 0

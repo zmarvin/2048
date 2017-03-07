@@ -33,7 +33,7 @@ class ViewController: UIViewController{
     func setUpTotleScoreView() {
         scoreLabel = UILabel(frame: CGRect(x: 10, y: 40, width: UIScreen.main.bounds.width * 0.5 - 20, height: 120))
         self.view.addSubview(scoreLabel)
-        scoreLabel.backgroundColor = UIColor.orange
+        scoreLabel.backgroundColor = UIColor.white
         scoreLabel.textAlignment = .center
         scoreLabel.text = "总得分："
     }
@@ -42,7 +42,7 @@ class ViewController: UIViewController{
         let labelX = scoreLabel.frame.size.width + 2*10
         maxNumberLabel = UILabel(frame: CGRect(x: labelX + 10, y: 40, width: UIScreen.main.bounds.width - labelX - 20, height: 120))
         self.view.addSubview(maxNumberLabel)
-        maxNumberLabel.backgroundColor = UIColor.orange
+        maxNumberLabel.backgroundColor = UIColor.white
         maxNumberLabel.textAlignment = .center
         maxNumberLabel.text = "最大数："
     }

@@ -12,8 +12,7 @@ import UIKit
 extension Decorator2048{
     
     var fontValue : UIFont {return UIFont.boldSystemFont(ofSize: 25)}
-    var animation : Bool {return false}
-    var animationInterval : Int {return 2}
+    var haveAnimation : Bool {return true}
     var itemColor : UIColor {return UIColor.orange}
     var itemBackgroundColor : UIColor {return UIColor.darkGray}
     var wallpaperColor : UIColor {return UIColor.brown}
@@ -39,6 +38,32 @@ class Decorator2048: MatrixView{
                 itemView.layer.masksToBounds = true
             }
         }
+        if haveAnimation {
+            self.emergedItemView =  {(itemView:UIButton)->Void in
+                let spring = CASpringAnimation(keyPath: "transform")
+                spring.damping = 50;
+                spring.stiffness = 500;
+                spring.mass = 1;
+                spring.initialVelocity = 0;
+                spring.fromValue = CATransform3DMakeScale(0.3, 0.3, 1);
+                spring.toValue = CATransform3DMakeScale(1, 1, 1);
+                spring.duration = spring.settlingDuration;
+                itemView.layer.add(spring, forKey: spring.keyPath);
+            }
+            
+            self.combinedItemView =  {(itemView:UIButton)->Void in
+                let spring = CASpringAnimation(keyPath: "transform")
+                spring.damping = 50;
+                spring.stiffness = 500;
+                spring.mass = 1;
+                spring.initialVelocity = 0;
+                spring.fromValue = CATransform3DMakeScale(0.3, 0.3, 1);
+                spring.toValue = CATransform3DMakeScale(1, 1, 1);
+                spring.duration = spring.settlingDuration;
+                itemView.layer.add(spring, forKey: spring.keyPath);
+            }
+        }
+        
         
         reloadSubViews()
         

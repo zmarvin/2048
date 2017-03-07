@@ -16,13 +16,16 @@ protocol MatrixViewProtocol {
 
 
 class MatrixView: UIView {
+    
     open var maxNumber: Int
     open var totalNumber: Int
     open var isHaveUnoccupiedView: Bool
     open var selfWidth: CGFloat?
     open var delegate : MatrixViewProtocol?
     open var moveGestureComplete : ((_ matrixView:MatrixView)->Void)?
-    
+    open var emergedItemView : ((_ itemView:UIButton)->Void)?
+    open var combinedItemView : ((_ itemView:UIButton)->Void)?
+
     var matrix: Matrix
     
     fileprivate var rows ,columns : Int
@@ -43,7 +46,23 @@ class MatrixView: UIView {
         isHaveUnoccupiedView = false
         self.matrix = Matrix(rows: rows, columns:columns)
         gestureView = UIView(frame: CGRect.zero)
+        
         super.init(frame: CGRect.zero)
+        
+        self.matrix.emergedItem = {[unowned self] (item:Item)->Void in
+            let itemView = self[item.row ,item.column]
+            if let emergedItemView = self.emergedItemView {
+                emergedItemView(itemView)
+            }
+        }
+        
+        self.matrix.combinedItem = {[unowned self] (item:Item)->Void in
+            let itemView = self[item.row ,item.column]
+            if let combinedItemView = self.combinedItemView {
+                combinedItemView(itemView)
+            }
+        }
+        
         
         // default setter state
         self.backgroundColor = UIColor.brown
@@ -70,7 +89,6 @@ class MatrixView: UIView {
         rightSwipe.numberOfTouchesRequired = 1
         rightSwipe.direction = UISwipeGestureRecognizerDirection.right
         gestureView.addGestureRecognizer(rightSwipe)
-        
         
         // setUpItemViews
         for _ in 0..<columns {
@@ -169,6 +187,7 @@ class MatrixView: UIView {
             move(.right)
         case UISwipeGestureRecognizerDirection.left:
             move(.left)
+            
         default:
             break;
         }

@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct Matrix {
+struct Matrix{
     
     let rows, columns: Int
     var ultimateNumber: Int
     var totalNumber: Int = 0
     fileprivate var isHaveUnoccupiedItem: Bool
-    
+    public var emergedItem : ((_ item:Item)->Void)?
+    public var combinedItem : ((_ item:Item)->Void)?
     var items: [Item]
     fileprivate var used: [Item]
     fileprivate var unused: [Item]
@@ -79,8 +80,8 @@ struct Matrix {
             totalNumber += item.number
         }
     }
-    
-    mutating func presentOneRandomItem() {
+    @discardableResult
+    mutating func presentOneRandomItem() -> Item?{
         
         func randomNumber(_ number: Int) -> Int {
             return Int(arc4random_uniform(UInt32(number)))
@@ -89,7 +90,7 @@ struct Matrix {
         let unusedCount = unused.count
         if unusedCount == 0{
             isHaveUnoccupiedItem = false
-            return
+            return nil
         }
         
         let item = unused[randomNumber(unusedCount)]
@@ -103,29 +104,40 @@ struct Matrix {
         
         refreshTotalNumber()
         
+        if let emerge = self.emergedItem {
+            emerge(item)
+        }
+        
+        return item
     }
     
     @discardableResult
     mutating func reloadMatrix(_ direction : MoveDirection) -> Int{
         
-        func transferItemNumber(_ nearItem : Item , from item: Item){
-            
-            if nearItem.number == item.number{
-                nearItem.number = 2 * item.number
-                item.number = 0
+        var arrangedItemCount : Int = 0
+
+        func transferItemNumber(_ nearItem : Item , from fItem: Item){
+
+            if nearItem.number == fItem.number{
+                nearItem.number = 2 * fItem.number
+                fItem.number = 0
+                
+                if let combine = self.combinedItem {
+                    combine(nearItem)
+                }
+                
                 if ultimateNumber <= nearItem.number {
                     ultimateNumber = nearItem.number
                 }
             }else{
-                nearItem.number = item.number
-                item.number = 0
+                nearItem.number = fItem.number
+                fItem.number = 0
             }
-
+            
         }
         
-        var arrangedItemCount : Int = 0
-        
         for tempRow in 0..<self.rows {
+            
             var row = tempRow
             if direction == MoveDirection.down { //倒序
                 row = self.rows - (tempRow + 1)
@@ -160,6 +172,7 @@ struct Matrix {
                     
                     currentItem = nearItem!
                     nearItem = currentItem.nearItemInDirection(direction)
+                    
                 }
                 
                 if currentItem !== item {
@@ -187,6 +200,7 @@ struct Matrix {
     }
     
     func removeItem(array:inout [Item],item:Item) {
+        
         let index = array.index { (pItem) -> Bool in
             return pItem === item
         }
@@ -200,6 +214,7 @@ struct Matrix {
 
         }
     }
+
     
 }
 
